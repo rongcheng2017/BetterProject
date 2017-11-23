@@ -1,10 +1,15 @@
 apply plugin: 'com.android.application'
 
-def  cmd  = 'git rev-list HEAD --count'
-def  gitVersion = cmd.execute().text.trim().toInteger()
-def  getVerNameCmd =" git describe --tags"
-def  gitVerName =getVerNameCmd.execute().text.trim().toString();
+//def getVersionCode() {
+def cmdCode = 'git rev-list HEAD --count'
+def verCode = cmdCode.execute().text.trim().toInteger()
+//}
 
+//def getVersionName() {
+def cmdName = " git describe --tags"
+def verName = cmdName.execute().text.trim().toString()
+//    return verName
+//}
 
 android {
     compileSdkVersion 26
@@ -12,8 +17,8 @@ android {
         applicationId "com.fengrongcheng.betterproject"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode gitVersion
-        versionName gitVerName
+        versionCode verCode
+        versionName verName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -21,8 +26,26 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            applicationIdSuffix ".debug"
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+
     }
+    applicationVariants.all { variant ->
+        if (variant.buildType.name.equals('release')) {
+            variant.mergedFlavor.versionCode = getVersionCode()
+            variant.mergedFlavor.versionName = getVersionName()
+        } else {
+            variant.mergedFlavor.versionCode = 1
+            variant.mergedFlavor.versionName = "debug"
+        }
+    }
+
 }
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
