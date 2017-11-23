@@ -1,22 +1,21 @@
 apply plugin: 'com.android.application'
 
-//def getVersionCode() {
 def cmdCode = 'git rev-list HEAD --count'
 def verCode = cmdCode.execute().text.trim().toInteger()
-//}
 
-//def getVersionName() {
 def cmdName = " git describe --tags"
 def verName = cmdName.execute().text.trim().toString()
-//    return verName
-//}
+
+
+def cfg = rootProject.ext.configuration
+def libs = rootProject.ext.libraries
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion cfg.compileVersion
     defaultConfig {
-        applicationId "com.fengrongcheng.betterproject"
-        minSdkVersion 15
-        targetSdkVersion 26
+        applicationId cfg.package
+        minSdkVersion cfg.minSdk
+        targetSdkVersion cfg.targetSdk
         versionCode verCode
         versionName verName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -49,7 +48,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation "com.android.support:appcompat-v7:${libs.supportVersion}"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
