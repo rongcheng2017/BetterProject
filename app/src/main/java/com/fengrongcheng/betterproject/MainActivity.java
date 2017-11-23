@@ -15,5 +15,6 @@ public class MainActivity extends AppCompatActivity {
         TAG = this.getClass().getSimpleName();
         setContentView(R.layout.activity_main);
         Log.e(TAG, "VersionCode ::      " + ApkVersionUtils.getVersionCode(this));
+        Log.e(TAG, "VersionName ::     " + ApkVersionUtils.getVersionName(this));
     }
 }
